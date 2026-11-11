@@ -1,0 +1,11 @@
+# Build artifacts
+/build/
+
+# Editor/OS cruft
+*.swp
+*~
+.DS_Store
+
+# clang dir
+.cache/
+compile_commands.json
