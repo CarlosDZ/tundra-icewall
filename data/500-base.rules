@@ -1,0 +1,9 @@
+# Stock policy of Tundra OS. See 000-template.rules for every key.
+#
+# Nothing comes in, except the replies to what this host started. Everything
+# goes out. To close the output too, set out = deny and add allow rules with
+# direction = out; the template lists the ones a laptop needs first.
+
+default {
+	out = allow
+}

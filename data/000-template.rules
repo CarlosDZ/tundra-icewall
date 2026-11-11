@@ -1,0 +1,60 @@
+# tundra-icewall rules template. This file is never loaded: copy what you need
+# to another file in /etc/tundra/icewall/ ending in .rules, check it with
+# "tundra-icewall check" and load it with "systemctl reload tundra-icewall".
+# Files are read in lexicographic order and the first rule that matches wins.
+#
+# Always there, whatever the files say: local traffic is accepted, IPv6 is
+# dropped, replies to connections of this host are accepted, a packet for the
+# address of another interface is dropped and nothing is forwarded. What no
+# rule matches is dropped on the way in; on the way out it follows default.
+#
+# default: once at most, in any file. Without it the output is denied.
+#
+#   out   allow or deny
+#
+# allow, deny: one rule each.
+#
+#   direction   in or out. Required
+#   interface   optional: only through that interface
+#   protocol    optional: tcp, udp, icmp, or a list such as tcp, udp
+#   port        optional, only with tcp and udp: the destination port. One
+#               (22), a list (80, 443), a range (8000-8100) or a mix of them
+#   from        optional: source, an IPv4 address or network (192.168.1.0/24)
+#   to          optional: destination, an IPv4 address or network
+#
+# An SSH server for the local network only:
+#
+# allow {
+# 	direction = in
+# 	protocol = tcp
+# 	port = 22
+# 	from = 192.168.1.0/24
+# }
+#
+# Answer to ping:
+#
+# allow {
+# 	direction = in
+# 	protocol = icmp
+# }
+#
+# With out = deny, what a laptop needs to keep working. DHCP gets its first
+# lease below the firewall, but renewing it needs the first rule:
+#
+# allow {
+# 	direction = out
+# 	protocol = udp
+# 	port = 67
+# }
+#
+# allow {
+# 	direction = out
+# 	protocol = tcp, udp
+# 	port = 53
+# }
+#
+# allow {
+# 	direction = out
+# 	protocol = tcp
+# 	port = 80, 443
+# }

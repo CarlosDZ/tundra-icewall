@@ -1,0 +1,32 @@
+[Unit]
+Description=Tundra firewall
+Documentation=https://github.com/CarlosDZ/tundra-icewall
+DefaultDependencies=no
+Wants=network-pre.target
+Before=network-pre.target shutdown.target
+After=local-fs.target
+Conflicts=shutdown.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# ADR-032. A failure leaves the lockdown loaded and the unit failed: whatever
+# requires it, tundra-networkd first, does not start.
+ExecStart=@BINDIR@/tundra-icewall boot
+ExecReload=@BINDIR@/tundra-icewall load
+
+# ADR-031. The program keeps only CAP_NET_ADMIN and loads its own seccomp
+# filter once it has read the rules and opened its netlink socket.
+CapabilityBoundingSet=CAP_NET_ADMIN
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_NETLINK
+MemoryDenyWriteExecute=yes
+
+[Install]
+WantedBy=sysinit.target
