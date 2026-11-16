@@ -16,7 +16,6 @@ uint32_t policy_build(struct nfbuf *b, const struct ruleset *rs);
 /* Only local traffic. */
 uint32_t policy_lockdown(struct nfbuf *b);
 
-/* The request for the table, to read its state back. */
 uint32_t policy_query(struct nfbuf *b);
 
 /* Kernel rules rs becomes, fixed ones aside. */

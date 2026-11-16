@@ -1,5 +1,3 @@
-/* Real traffic for the tests: a listener that answers, and a client that
- * says whether it got through. */
 #include <arpa/inet.h>
 #include <errno.h>
 #include <poll.h>

@@ -34,7 +34,6 @@ check() {
 	fi
 }
 
-# The opposite: the command has to fail.
 refuse() {
 	desc=$1
 	shift
@@ -69,7 +68,6 @@ setup() {
 		echo 0 >"/proc/sys/net/ipv4/conf/$f/rp_filter"
 	done
 	mkdir -p "$RULES"
-	# What the peer offers and what the host offers.
 	for port in 22 23 80 81; do
 		background "$TALK" listen tcp "$port"
 		background in_peer "$TALK" listen tcp "$port"
@@ -89,7 +87,6 @@ teardown() {
 	rm -rf "$WORK"
 }
 
-# rules <name> : writes stdin as a rule file.
 rules() {
 	cat >"$RULES/$1.rules"
 }
@@ -106,7 +103,6 @@ state_is() {
 	[ "$("$ICEWALL" status)" = "$1" ]
 }
 
-# From the peer to the host, and back.
 peer_tcp() {
 	in_peer "$TALK" tcp "$1" "$2"
 }
